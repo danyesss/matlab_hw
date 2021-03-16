@@ -1,0 +1,20 @@
+function[F,X,Y,P] = SpherePotential(XYZ,Q,R,r0,a,b,Dx,Dy,Nxy)
+
+Q = ElectroStaticBalls(XYZ, Q, R, r0);
+
+[X,Y,P] = Rotation(a,b,Dx,Dy,Nxy);
+
+Grid
+
+for i=1:Nxy(1)
+    Grid() = P*[X(i,:);Y(i,:)];
+end
+
+for i=1:Nxy(1)
+    for j=1:Nxy(2)
+        r0 = 
+        F(i,j) = PotentialCalculation(XYZ, R, Q, r0);
+    end
+end
+end
+    
