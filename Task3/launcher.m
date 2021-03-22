@@ -13,33 +13,44 @@ clear all;
 %   4th column - Radia
 %   5th column - Potential
 
-data = dlmread('data.txt');
+%data = dlmread('data.txt');
 
-XYZ = data(:,1:3);
-R = data(:,4);
-F = data(:,5);
+% 
+% a = [1,0,0]';
+% b =[0,1,0]';
+% Dx = [-10,10];
+% Dy = [-10,10];
+% Nxy = [50 50];
+% 
+% r0 = [0,0,0];
+
+load('./data/Cube_quadr_1.mat');
 
 R = R';
 XYZ = XYZ';
 
-Q1 = ElectroStaticBalls(XYZ, R, F);
-disp(Q1);
-
+% Q1 = ElectroStaticBalls(XYZ, R, F);
+% disp(Q1);
+% 
 [Q2,D] = ElectroStaticDipoles(XYZ, R, F);
-disp(Q2);
+% disp(Q2); disp(D);
 
-% Points parameters should be written manually beyond ->
 
-a = [1,1,1]';
-b =[1,1,3]';
-Dx = [-2,2];
-Dy = [-2,2];
-Nxy = [5 5];
+% [F1,X,Y,P] = SpherePotential(XYZ,Q1,R,r0,a,b,Dx,Dy,Nxy);
+% disp(F1);
+% 
+% surf(X,Y,F1);
+% shading interp
+% camlight
 
-r0 = [0,0,3];
+% assymmetry in data ???
 
-[F1,X,Y,P] = SpherePotential(XYZ,Q1,R,r0,a,b,Dx,Dy,Nxy);
-disp(F1);
+[F2,X,Y,P] = SphereDipPotential(XYZ,Q2,D,R,r0,a,b,Dx,Dy,Nxy);
+%disp(F2);
 
-[F2,X,Y,P] = SphereDipPotential(XYZ,Q1,D,R,r0,a,b,Dx,Dy,Nxy);
-disp(F2);
+surf(X,Y,F2);
+shading interp
+camlight
+% plot3(X(:),Y(:),F2);
+
+%why the same ??? 

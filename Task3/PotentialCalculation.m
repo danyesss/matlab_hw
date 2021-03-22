@@ -8,14 +8,16 @@ Z = XYZ(3,:);
 
 M = zeros(1,N);
 
-x0 = r0(1);
-y0 = r0(2);
-z0 = r0(3);
+xyz = r0*ones(1,N) - XYZ;
 
 for j=1:N        
-     xyz = r0 - XYZ(:,j);
+    % xyz = r0 - XYZ(:,j);
+    if norm(xyz(:,j)) > R(j)
      % charge potential and field :
-     M(1,j) = 1./norm(xyz);        
+        M(1,j) = 1./norm(xyz(:,j));
+    else
+        M(1,j) = 1/R(j);
+    end
 end
 
 F = M*Q;

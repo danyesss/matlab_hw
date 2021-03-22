@@ -1,5 +1,9 @@
 function[F,X,Y,P] = SphereDipPotential(XYZ,Q,D,R,r0,a,b,Dx,Dy,Nxy)
 
+Check = Correctness(XYZ,R);
+
+if Check == 1
+
 [X,Y,P] = Rotation(a,b,Dx,Dy,Nxy);
 
 Grid = ones(3,Nxy(1),Nxy(2));
@@ -18,6 +22,12 @@ for i=1:Nxy(1)
         r1 = Grid(:,i,j);
         F(i,j) = PotentialDipCalculation(XYZ, R, Q, D, r1);
     end
+end
+
+else 
+    disp("Balls intersections aren't allowed!!!")
+    F = NaN;
+   % hi!;
 end
 %disp(F);
 end

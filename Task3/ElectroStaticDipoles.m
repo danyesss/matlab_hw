@@ -92,7 +92,12 @@ F_expanded = [F;zeros(3*N,1)];
 Q_expanded = linsolve(M,F_expanded);
 
 Q = Q_expanded(1:N);
-D = Q_expanded(N+1:4*N);
+DD = Q_expanded(N+1:4*N);
+
+%disp(DD);
+
+D = [DD(1:N),DD(N+1:2*N),DD(2*N+1:3*N)];
+
 % disp(Q);
 end
 
