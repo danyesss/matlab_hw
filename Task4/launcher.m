@@ -24,3 +24,21 @@ k = [1, 2, 1, 2;
     4, 3, 1, 2;]';
 
 [Fr, Dr] = VibraStates(xyz,q,m,k);
+
+disp(Fr);
+
+% T = [1e-15:1e-15:1e-12]';
+
+T = [1e-14:1e-14:1e-12]';
+
+Cv = SpecificHeatVib(Fr, T);
+
+disp(Cv);
+
+plot(T, Cv, 'b-');
+
+I = IR_Spectra(Fr, Dr, q, m, T);
+
+% disp(I);
+plot(T,I);
+

@@ -54,6 +54,11 @@ end
 %     break;
 % end
 
+
+if flag == 0
+    error("Error, system is not in equilibrium.");
+end
+
 % % % % % % % % % % % % % % % % % % % % % % % 
 
 % Normal frequencies :
@@ -73,20 +78,29 @@ for i=1:N
         k0 = k(3,jj);
         
        % disp(1e1 *e0*k0*(ex*(1-r0/r) + rvec(1) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ex/r^3 - 3*rvec(1)*rvec/r^5));
-        Mat(3*i + 1:3*i + 3, 3*j + 1) =  1e1 *e0*k0*(ex*(1-r0/r) + rvec(1) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ex/r^3 - 3*rvec(1)*rvec/r^5); 
-        Mat(3*i + 1:3*i + 3, 3*j + 2) =  1e1 *e0*k0*(ey*(1-r0/r) + rvec(2) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ey/r^3 - 3*rvec(2)*rvec/r^5);
-        Mat(3*i + 1:3*i + 3, 3*j + 3) =  1e1 *e0*k0*(ez*(1-r0/r) + rvec(3) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ez/r^3 - 3*rvec(3)*rvec/r^5);
+        Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(j-1) + 1) =  1e1 *e0*k0*(ex*(1-r0/r) + rvec(1) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ex/r^3 - 3*rvec(1)*rvec/r^5); 
+        Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(j-1) + 2) =  1e1 *e0*k0*(ey*(1-r0/r) + rvec(2) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ey/r^3 - 3*rvec(2)*rvec/r^5);
+        Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(j-1) + 3) =  1e1 *e0*k0*(ez*(1-r0/r) + rvec(3) * r0 * rvec /r^3 ) + 1e16 * q(i)*q(j)*e0^2*(ez/r^3 - 3*rvec(3)*rvec/r^5);
         
-        Mat(3*i + 1:3*i + 3, j + 1 : j + 3) = 1/m(i) * Mat(3*i + 1:3*i + 3, j + 1 : j + 3);
+        Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(j-1) + 1 : 3*(j-1) + 3) = 1/m(i) *  Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(j-1) + 1 : 3*(j-1) + 3);
         
     end
-       Mat(3*i + 1:3*i + 3, 3*i + 1) =  zeros(3,1);
-       Mat(3*i + 1:3*i + 3, 3*i + 2) =  zeros(3,1);
-       Mat(3*i + 1:3*i + 3, 3*i + 3) =  zeros(3,1);
+       Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(i-1) + 1) =  zeros(3,1);
+       Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(i-1) + 2) =  zeros(3,1);
+       Mat(3*(i-1) + 1:3*(i-1) + 3, 3*(i-1) + 3) =  zeros(3,1);
 end
 
 [V, D] = eig(Mat);
+
 D = diag(D);
+
+if(find(D)<0)
+    error("Error, system is unstable.");
+end
+
+D = (sqrt(D));
+
+% delete Degeneracy modes;
 
 nsmall = size(find(D==0),1);
 array = find(D==0);
@@ -98,7 +112,7 @@ end
 
 %disp(D);
 
-Fr = sqrt(D)';
+Fr = D';
 Dr = V;
 
 % что удалять ?))
